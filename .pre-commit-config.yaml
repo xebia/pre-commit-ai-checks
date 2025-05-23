@@ -16,35 +16,19 @@ repos:
       - id: trailing-whitespace
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    # Ruff version.
     rev: v0.9.7
     hooks:
-      # Run the linter.
       - id: ruff
         types_or: [python, pyi]
         args: [--fix]
-        exclude: ^(proto/|schemas/|src/ingestor/entities/).*$
-      # Run the formatter.
       - id: ruff-format
         types_or: [python, pyi]
-        exclude: ^(proto/|schemas/|src/ingestor/entities/).*$
 
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.8.0
     hooks:
       - id: mypy
-        additional_dependencies:
-          [
-            "types-PyYAML",
-            "types-decorator",
-            "types-requests",
-            "types-pytz",
-            "types-cachetools",
-            "types-protobuf",
-          ]
-        exclude: ^(proto/|schemas/|src/ingestor/entities/).*$
 
-  # Prettier
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: v3.1.0
     hooks:
