@@ -1,5 +1,5 @@
 - id: ai-checks
-  name: Check code with AI
+  name: ai-checks
   description: This hook checks code with AI
   entry: ai-checks
   language: python
