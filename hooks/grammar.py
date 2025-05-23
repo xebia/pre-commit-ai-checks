@@ -1,5 +1,6 @@
 import sys
 import argparse
+import subprocess
 from google import genai
 
 from ._utils import AIChecksConfig
@@ -12,13 +13,18 @@ Instructions:
 - Review the provided Python source code carefully.
 - Identify grammar errors ONLY in comments, docstrings, and strings intended for user interaction or documentation.
 - Do NOT suggest code logic or structural improvements; focus solely on English grammar and readability.
+- Ignore grammatical correctness of ending dots.
+- The result MUST be ONLY a list of errors if there are any, or an empty list if there are no errors.
 - If grammar errors are found, list each error clearly in the following structured format:
   - Line [line_number]: "Original incorrect text"
   - Correction: "Corrected grammatically accurate text"
   - Explanation: Briefly explain the grammatical issue.
 - If no grammar errors are found, simply respond with:
   - No grammar errors found.
+- If an empty file is given, simply respond with `No grammar errors found`.
+- DO NOT include any other text or example in the response!
 
+FOLLOW THE INSTRUCTIONS STRICTLY!
 Begin the review now.
 """
 
@@ -41,24 +47,42 @@ def parse_args(argv):
     return parser.parse_args(argv)
 
 
-def check_grammar(file_path: str, config: AIChecksConfig):
-    print(f"Checking grammar for {file_path}")
+def get_git_diff(file_path: str):
+    try:
+        diff = subprocess.check_output(
+            ["git", "diff", "--staged", file_path],
+            stderr=subprocess.STDOUT,
+            universal_newlines=True,
+        )
+        return diff
+    except subprocess.CalledProcessError:
+        return None
+
+
+def check_grammar(file_path: str, config: AIChecksConfig, diff_only: bool = False):
+    print(f"🔍 Checking grammar for {file_path}")
 
     client = genai.Client(api_key=config.api_key)
     model = config.ai_model
 
-    with open(file_path, "r") as f:
-        contents = f.read()
-        contents = f"{PROMPT}\n\n`{contents}`"
+    if diff_only:
+        diff = get_git_diff(file_path)
+        if not diff:
+            return "No grammar errors found"
 
-        response = client.models.generate_content(model=model, contents=contents)
-        print(response.text)
+        request = f"{PROMPT}\n\n`{diff}`"
+    else:
+        with open(file_path, "r") as f:
+            content = f.read()
+            if not content:
+                return "No grammar errors found"
+
+            request = f"{PROMPT}\n\n`{content}`"
+    response = client.models.generate_content(model=model, contents=request)
+    return response.text
 
 
 def main(argv=None):
-    print("Running grammar hook")
-    print(f"argv: {argv}")
-
     if argv is None:
         argv = sys.argv[1:]
 
@@ -66,22 +90,23 @@ def main(argv=None):
     config = AIChecksConfig()
 
     if not args.files:
-        print("No files to check.")
+        print("📝 No files to check.")
         return 0
 
-    print(f"args: {args}")
     print(f"config: {config}")
-
-    print(f"Running custom logic on {len(args.files)} file(s):")
+    errors_found = 0
     for f in args.files:
-        print(f" - {f}")
-        check_grammar(f, config)
+        response = check_grammar(f, config, args.diff_only)
+        if response and response.startswith("No grammar errors found"):
+            print(f"  ✅ No grammar errors found in {f}")
+        else:
+            print(f"  ❌ Grammar errors found in {f}")
+            print(response)
+            errors_found += 1
 
-    # TODO: insert actual check logic here
-    # Example: for each file, open and analyze contents
-
-    # Always succeed by default
-    return 0
+    if args.ignore_errors:
+        return 0
+    return errors_found
 
 
 if __name__ == "__main__":
