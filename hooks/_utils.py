@@ -1,6 +1,11 @@
 import os
 import yaml
 import pathlib as pl
+from enum import Enum
+
+
+class AIChecksSupportedModels(Enum):
+    GEMINI_2_0_FLASH = "gemini-2.0-flash"
 
 
 class AIChecksConfig:
@@ -8,7 +13,7 @@ class AIChecksConfig:
         self, config_path: pl.Path = pl.Path(".pre-commit-ai-checks-config.yaml")
     ):
         self.config_path = config_path
-        self.ai_model: str | None = None
+        self.ai_model: AIChecksSupportedModels | None = None
         self.api_key: str | None = None
         self.load()
 
@@ -16,12 +21,14 @@ class AIChecksConfig:
         if os.getenv("PRE_COMMIT_AI_CHECKS_AI_MODEL") and os.getenv(
             "PRE_COMMIT_AI_CHECKS_API_KEY"
         ):
-            self.ai_model = os.getenv("PRE_COMMIT_AI_CHECKS_AI_MODEL")
+            self.ai_model = AIChecksSupportedModels(
+                os.getenv("PRE_COMMIT_AI_CHECKS_AI_MODEL")
+            )
             self.api_key = os.getenv("PRE_COMMIT_AI_CHECKS_API_KEY")
         else:
             with open(self.config_path, "r") as f:
                 config = yaml.safe_load(f)
-                self.ai_model = config.get("ai_model")
+                self.ai_model = AIChecksSupportedModels(config.get("ai_model"))
                 api_key_raw = config.get("api_key")
 
                 # Handle environment variable references in the API key, e.g. ${PRE_COMMIT_AI_CHECKS_API_KEY}
