@@ -17,7 +17,7 @@ dependencies = [
 ]
 
 [project.scripts]
-ai_checks = "pre_commit_ai_checks.hooks:main"
+ai-checks = "hooks.ai_checks:main"
 
 [project.optional-dependencies]
 dev = ["pytest"]
