@@ -15,6 +15,11 @@ def parse_args(argv):
         action="store_false",
         help="Ignore errors and continue with the next file",
     )
+    parser.add_argument(
+        "--diff-only",
+        action="store_true",
+        help="Only check the diff of the files, not the entire file",
+    )
     return parser.parse_args(argv)
 
 
