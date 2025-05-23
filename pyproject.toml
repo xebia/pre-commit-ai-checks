@@ -17,7 +17,8 @@ dependencies = [
 ]
 
 [project.scripts]
-ai-checks = "hooks.ai_checks:main"
+grammar = "hooks.grammar:main"
+silly-mistakes = "hooks.silly_mistakes:main"
 
 [project.optional-dependencies]
 dev = ["pytest"]

@@ -3,7 +3,9 @@ import argparse
 
 
 def main(argv=None):
-    """Entry point for the custom pre-commit hook."""
+    print("Running grammar hook")
+    print(f"argv: {argv}")
+
     if argv is None:
         argv = sys.argv[1:]
 
@@ -21,6 +23,8 @@ def main(argv=None):
     if not args.files:
         print("No files to check.")
         return 0
+
+    print(f"args: {args}")
 
     print(f"Running custom logic on {len(args.files)} file(s):")
     for f in args.files:

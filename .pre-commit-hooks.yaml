@@ -1,8 +1,102 @@
-- id: ai-checks
-  name: ai-checks
-  description: This hook checks code with AI
-  entry: ai-checks
+- id: grammar
+  name: grammar
+  description: This hook checks grammar and spelling
+  entry: grammar
   language: python
   types: [python]
   stages: [pre-commit, pre-merge-commit, manual]
-  pass_filenames: true
+
+- id: silly-mistakes
+  name: silly-mistakes
+  description: This hook checks for silly mistakes
+  entry: silly-mistakes
+  language: python
+  types: [python]
+  stages: [pre-commit, pre-merge-commit, manual]
+# - id: code-quality
+#   name: code-quality
+#   description: This hook checks code quality
+#   entry: code-quality
+#   language: python
+#   types: [python]
+#   stages: [pre-commit, pre-merge-commit, manual]
+
+# - id: code-complexity
+#   name: code-complexity
+#   description: This hook checks code complexity
+#   entry: code-complexity
+#   language: python
+#   types: [python]
+#   stages: [pre-commit, pre-merge-commit, manual]
+
+# - id: code-duplication
+#   name: code-duplication
+#   description: This hook checks code duplication
+#   entry: code-duplication
+#   language: python
+#   types: [python]
+#   stages: [pre-commit, pre-merge-commit, manual]
+
+# - id: error-and-exception-handling
+#   name: error-and-exception-handling
+#   description: This hook checks error and exception handling
+#   entry: error-and-exception-handling
+#   language: python
+#   types: [python]
+#   stages: [pre-commit, pre-merge-commit, manual]
+
+# - id: security-and-privacy
+#   name: security-and-privacy
+#   description: This hook checks security and privacy
+#   entry: security-and-privacy
+#   language: python
+#   types: [python]
+#   stages: [pre-commit, pre-merge-commit, manual]
+
+# - id: performance
+#   name: performance
+#   description: This hook highlights inefficient algorithms or data structures
+#   entry: performance
+#   language: python
+#   types: [python]
+#   stages: [pre-commit, pre-merge-commit, manual]
+
+# - id: memory-leak-identification
+#   name: memory-leak-identification
+#   description: This hook identifies potential memory leaks or improper resource management
+#   entry: memory-leak-identification
+#   language: python
+#   types: [python]
+#   stages: [pre-commit, pre-merge-commit, manual]
+
+# - id: maintainability-score
+#   name: maintainability-score
+#   description: This hook evaluates code maintainability using metrics like readability and modularity
+#   entry: maintainability-score
+#   language: python
+#   types: [python]
+#   stages: [pre-commit, pre-merge-commit, manual]
+
+# - id: documentation-completeness
+#   name: documentation-completeness
+#   description: This hook ensures all public interfaces and APIs are documented
+#   entry: documentation-completeness
+#   language: python
+#   types: [python]
+#   stages: [pre-commit, pre-merge-commit, manual]
+
+# - id: data-and-schema-validation
+#   name: data-and-schema-validation
+#   description: This hook verifies consistency between data schemas in code and actual usage
+#   entry: data-and-schema-validation
+#   language: python
+#   types: [python]
+#   stages: [pre-commit, pre-merge-commit, manual]
+
+# - id: data-handling-verification
+#   name: data-handling-verification
+#   description: This hook detects improper or insecure data handling patterns
+#   entry: data-handling-verification
+#   language: python
+#   types: [python]
+#   stages: [pre-commit, pre-merge-commit, manual]
