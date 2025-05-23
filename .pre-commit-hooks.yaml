@@ -1,0 +1,8 @@
+- id: ai-checks
+  name: Check code with AI
+  description: This hook checks code with AI
+  entry: ai_checks
+  language: python
+  types: [python]
+  stages: [pre-commit, pre-merge-commit, manual]
+  pass_filenames: true
