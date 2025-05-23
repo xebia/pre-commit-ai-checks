@@ -12,7 +12,7 @@ def parse_args(argv):
     )
     parser.add_argument(
         "--ignore-errors",
-        action="store_false",
+        action="store_true",
         help="Ignore errors and continue with the next file",
     )
     parser.add_argument(
