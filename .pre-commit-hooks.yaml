@@ -1,13 +1,13 @@
-- id: grammar
-  name: grammar
+- id: ai-checks-grammar
+  name: ai-checks-grammar
   description: This hook checks grammar and spelling
   entry: grammar
   language: python
   types: [python]
   stages: [pre-commit, pre-merge-commit, manual]
 
-- id: silly-mistakes
-  name: silly-mistakes
+- id: ai-checks-silly-mistakes
+  name: ai-checks-silly-mistakes
   description: This hook checks for silly mistakes
   entry: silly-mistakes
   language: python
