@@ -1,6 +1,21 @@
 import sys
 import argparse
 
+from ._utils import AIChecksConfig
+
+
+def parse_args(argv):
+    parser = argparse.ArgumentParser(description="Grammar pre-commit hook")
+    parser.add_argument(
+        "files", nargs="*", help="List of files to check (provided by pre-commit)"
+    )
+    parser.add_argument(
+        "--ignore-errors",
+        action="store_false",
+        help="Ignore errors and continue with the next file",
+    )
+    return parser.parse_args(argv)
+
 
 def main(argv=None):
     print("Running grammar hook")
@@ -9,22 +24,15 @@ def main(argv=None):
     if argv is None:
         argv = sys.argv[1:]
 
-    parser = argparse.ArgumentParser(description="Custom pre-commit hook")
-    parser.add_argument(
-        "files", nargs="*", help="List of files to check (provided by pre-commit)"
-    )
-    parser.add_argument(
-        "--fail-on-warning",
-        action="store_true",
-        help="Exit with non-zero status if any warnings are emitted",
-    )
-    args = parser.parse_args(argv)
+    args = parse_args(argv)
+    config = AIChecksConfig()
 
     if not args.files:
         print("No files to check.")
         return 0
 
     print(f"args: {args}")
+    print(f"config: {config}")
 
     print(f"Running custom logic on {len(args.files)} file(s):")
     for f in args.files:
